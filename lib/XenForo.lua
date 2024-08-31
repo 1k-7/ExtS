@@ -1,4 +1,4 @@
--- {"ver":"1.0.0","author":"JFronny","dep":["url>=1.0.0"]}
+-- {"ver":"1.0.1","author":"JFronny","dep":["url>=1.0.0"]}
 
 local qs = Require("url").querystring
 
@@ -75,9 +75,13 @@ function defaults:parseNovel(novelURL, loadChapters)
     }
 
     if loadChapters then
-        local count = tonumber(first(threadmarks:select(".threadmarkListingHeader-stats dl.pairs"), function(v)
+        local threadmarkContainer = first(threadmarks:select(".threadmarkListingHeader-stats dl.pairs"), function(v)
             return v:selectFirst("dt"):text() == "Threadmarks"
-        end):selectFirst("dd"):text())
+        end)
+        -- enable this when using the extension tester
+        -- if threadmarkContainer == nil then return novel end
+        local count = threadmarkContainer:selectFirst("dd"):text():gsub(",", "")
+        count = tonumber(count)
         count = count - count % 200
         count = count / 200 + 1
         local function parseChapters(novelDoc, page)
