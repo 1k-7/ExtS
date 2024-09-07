@@ -723,6 +723,16 @@
       "ver": "1.1.0",
       "libVer": "1.0.0",
       "md5": ""
+    },
+    {
+      "name": "Questionable Questing",
+      "fileName": "QuestionableQuesting",
+      "imageURL": "https://forum.questionablequesting.com/styles/dark_responsive_green/xenforo/qq-blue-small.png",
+      "id": 1915581632,
+      "lang": "en",
+      "ver": "1.0.0",
+      "libVer": "1.0.0",
+      "md5": ""
     }
   ]
 }

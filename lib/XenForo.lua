@@ -58,11 +58,13 @@ function defaults:parseNovel(novelURL, loadChapters)
     local head = threadmarks:selectFirst("head")
 
     local s = first(threadmarks:select(".threadmarkListingHeader-stats dl.pairs"), function(v)
-        return v:selectFirst("dt"):text() == "Status"
+        local headerTitle = v:selectFirst("dt"):text()
+        return headerTitle == "Status" or headerTitle == "Index progress"
     end):selectFirst("dd"):text()
 
     s = s and ({
         Ongoing = NovelStatus.PUBLISHING,
+        Incomplete = NovelStatus.PUBLISHING,
         Completed = NovelStatus.COMPLETED,
         Hiatus = NovelStatus.PAUSED
     })[s] or NovelStatus.UNKNOWN
