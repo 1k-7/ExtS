@@ -47,7 +47,7 @@ function defaults:getPassage(url)
     local doc = GETDocument(self.expandURL(url, KEY_CHAPTER_URL))
     local id = url:gsub(".*#", "")
     local post = doc:selectFirst("#js-" .. id)
-    local message = post:selectFirst(".message-body")
+    local message = post:selectFirst(".bbWrapper")
     message:prepend("<h1>" .. post:selectFirst(".threadmarkLabel"):text() .. "</h1>")
 
     return pageOfElem(message, true)
