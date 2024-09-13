@@ -53,6 +53,14 @@ function defaults:getPassage(url)
     return pageOfElem(message, true)
 end
 
+local function extractImage(baseURL, element)
+    if element == nil then return "" end
+    local img = element:attr("src")
+    if img == nil then return "" end
+    img = img:gsub("^/", baseURL):gsub("?[0-9]*$", "")
+    return img
+end
+
 function defaults:parseNovel(novelURL, loadChapters)
     local threadmarks = GETDocument(self.expandURL(novelURL, KEY_NOVEL_URL) .. "/threadmarks?per_page=200")
     local head = threadmarks:selectFirst("head")
@@ -69,10 +77,17 @@ function defaults:parseNovel(novelURL, loadChapters)
         Hiatus = NovelStatus.PAUSED
     })[s] or NovelStatus.UNKNOWN
 
+    local username = threadmarks:select(".username")
+    local img = threadmarks:selectFirst(".threadmarkListingHeader-icon img")
+    if img == nil and username:size() > 0 then
+        -- this _does_ mean that we have to make an additional request for most novels, but it's the only way to get the avatar here
+        img = GETDocument(self.baseURL .. "members/." .. username:get(0):attr("data-user-id") .. "?tooltip=true"):selectFirst(".memberTooltip-avatar img")
+    end
     local novel = NovelInfo {
         title = head:selectFirst("meta[property='og:title']"):attr("content"),
+        imageURL = extractImage(self.baseURL, img),
         description = head:selectFirst("meta[name='description']"):attr("content"),
-        authors = map(threadmarks:select(".username"), text),
+        authors = map(username, text),
         status = s
     }
 
@@ -144,14 +159,11 @@ function defaults:search(data)
     }))
 
     return map(page:select(".block-body .contentRow"), function(v)
-        local img = v:selectFirst(".contentRow-figure img")
-        if img == nil then img = ""
-        else img = img:attr("src") end
         local a = v:selectFirst(".contentRow-title a")
         return Novel {
             title = a:text(),
             link = a:attr("href"):sub(10, -2),
-            imageURL = img
+            imageURL = extractImage(self.baseURL, v:selectFirst(".contentRow-figure img"))
         }
     end)
 end
@@ -174,15 +186,12 @@ return function(baseURL, _self)
             if page > pageCount then return {} end
 
             return map(doc:select(".js-threadList .structItem--thread"), function(v)
-                local img = v:selectFirst(".structItem-cell--icon img")
-                if img == nil then img = ""
-                else img = img:attr("src") end
                 local href = v:selectFirst(".structItem-title a"):attr("href")
                 href = href:gsub("/threadmarks$", ""):gsub("/$", ""):sub(10)
                 return Novel {
                     title = v:selectFirst(".structItem-title"):text(),
                     link = href,
-                    imageURL = img
+                    imageURL = extractImage(baseURL, v:selectFirst(".structItem-cell--icon img"))
                 }
             end)
         end)
