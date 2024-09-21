@@ -102,12 +102,6 @@ local function parseNovel(novelURL, loadChapters)
     return novel
 end
 
---- Get a chapter passage based on its chapterURL.
----
---- Required.
----
---- @param chapterURL string The chapters shrunken URL.
---- @return string Strings in lua are byte arrays. If you are not outputting strings/html you can return a binary stream.
 local function getPassage(chapterURL)
     local document = GETDocument(chapterURL)
     map(document:select(".entry-content > :not(p, h1, hr)"), function(v) v:remove() end)
@@ -115,7 +109,6 @@ local function getPassage(chapterURL)
 end
 
 return {
-    -- Required
     id = -2129381796,
     name = "Wildbow (Parahumans)",
     baseURL = "https://www.parahumans.net/",
@@ -135,14 +128,12 @@ return {
     shrinkURL = function(url) return url end,
     expandURL = function(url) return url end,
 
-    -- Optional values to change
     imageURL = "https://parahumans.wordpress.com/wp-content/uploads/2011/06/cityscape2.jpg",
     hasCloudFlare = false,
     hasSearch = false,
     chapterType = ChapterType.HTML,
     startIndex = 1,
 
-    -- Required if [settings] is not empty
     updateSetting = function(id, value)
         settings[id] = value
     end,
