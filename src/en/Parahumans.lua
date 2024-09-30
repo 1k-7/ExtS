@@ -1,4 +1,4 @@
--- {"id":-2129381796,"ver":"1.0.0","libVer":"1.0.0","author":"JFronny"}
+-- {"id":78,"ver":"1.0.0","libVer":"1.0.0","author":"JFronny"}
 
 local settings = {}
 
@@ -111,7 +111,7 @@ local function getPassage(chapterURL)
 end
 
 return {
-    id = -2129381796,
+    id = 78,
     name = "Wildbow (Parahumans)",
     baseURL = "https://www.parahumans.net/",
     listings = {
