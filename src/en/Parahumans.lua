@@ -24,7 +24,7 @@ local auxiliary = {
     ["https://parahumans.wordpress.com/"] = {
         name = "Worm",
         image = "https://parahumans.wordpress.com/wp-content/uploads/2011/06/cityscape2.jpg",
-        description = "#content .entry-content p:nth-child(n+5):nth-child(-n+9)",
+        description = {5, 9},
         arcs = ".widget_categories .cat-item .cat-item:not(.cat-item .cat-item .cat-item)",
         arc = "a",
         chapters = ".cat-item .cat-item a"
@@ -32,7 +32,7 @@ local auxiliary = {
     ["https://pactwebserial.wordpress.com/"] = {
         name = "Pact",
         image = "https://pactwebserial.wordpress.com/wp-content/uploads/2014/01/pact-banner2.jpg",
-        description = "#content .entry-content p:nth-child(n+2):nth-child(-n+5)",
+        description = {2, 5},
         arcs = ".widget_categories .cat-item .cat-item:not(.cat-item .cat-item .cat-item)",
         arc = "a",
         chapters = ".cat-item .cat-item a"
@@ -47,7 +47,7 @@ local auxiliary = {
     ["https://www.parahumans.net/"] = {
         name = "Ward",
         image = "https://i2.wp.com/www.parahumans.net/wp-content/uploads/2017/10/cropped-Ward-Banner-Proper-1.jpg",
-        description = "#content .entry-content p:nth-child(n+5):nth-child(-n+6)",
+        description = {4, 5},
         arcs = "#secondary .widget_nav_menu:not(#nav_menu-2) .menu-item:not(.menu-item .menu-item)",
         arc = "a",
         chapters = ".menu-item .menu-item a"
@@ -55,7 +55,7 @@ local auxiliary = {
     ["https://palewebserial.wordpress.com/"] = {
         name = "Pale",
         image = "",
-        description = "#content .entry-content p:nth-child(n+1):nth-child(-n+7)",
+        description = {1, 7},
         arcs = "#nav_menu-2 .menu-item:not(.menu-item .menu-item)",
         arc = "a",
         chapters = ".sub-menu a"
@@ -69,7 +69,9 @@ local function parseNovel(novelURL, loadChapters)
     local novel = NovelInfo {
         title = aux.name,
         imageURL = aux.image,
-        description = document:select(aux.description):text(),
+        description = table.concat(map(document:select("#content .entry-content p"), function(v)
+            return v:text()
+        end), "\n\n", aux.description[1], aux.description[2]),
         authors = { "Wildbow" },
         status = NovelStatus.COMPLETED
     }
