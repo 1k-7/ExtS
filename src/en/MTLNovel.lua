@@ -1,6 +1,6 @@
 -- {"id":573,"ver":"2.0.1","libVer":"1.0.0","author":"Doomsdayrs","dep":["url>=1.0.0"]}
 
-local baseURL = "https://www.mtlnovel.com"
+local baseURL = "https://www.mtlnovels.com"
 local settings = { [1] = 0 }
 
 local ORDER_BYS_INT = { [0] = "date",[1] = "name",[2] = "rating",[3] = "view" }
@@ -13,7 +13,7 @@ local STATUES_INT = { [0] = "all",[1] = "completed",[2] = "ongoing" }
 local STATUSES_KEY = 104
 
 local function shrinkURL(url)
-	return url:gsub("^.-mtlnovel%.com", "")
+	return url:gsub("^.-mtlnovels%.com", "")
 end
 
 local function expandURL(url)
