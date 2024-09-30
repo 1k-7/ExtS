@@ -37,8 +37,8 @@ local auxiliary = {
         arc = "a",
         chapters = ".cat-item .cat-item a"
     },
-    -- We ignore Twig since that uses an abysmal table of contents.
-    -- If Wildbow though anyone might want to read it, he would have made it easier to read.
+    -- We ignore Twig since that uses a different (and significantly harder to parse) ToC.
+    -- If you want to read it, feel free to set it up yourself.
     --["https://twigserial.wordpress.com/"] = {
     --    name = "Twig",
     --    image = "https://twigserial.wordpress.com/wp-content/uploads/2016/06/cropped-twigheader5.png",
